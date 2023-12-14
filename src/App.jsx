@@ -8,6 +8,7 @@ function App() {
   const [hiScore, setHiScore] = useState(0);
 
   function manageClick(cardId) {
+    console.table(cards);
     let clickedCard = currentDeck.filter((card) => card.id === cardId)[0];
     if (clickedCard.clicked) {
       alert("you die");
@@ -18,6 +19,8 @@ function App() {
       setScore((oldScore) => {
         return (oldScore += 1);
       });
+
+      if (score + 1 >= hiScore) setHiScore(score + 1);
     }
   }
 
@@ -38,14 +41,22 @@ function App() {
   }
 
   function resetGame() {
-    setCurrentDeck(cards);
+    setCurrentDeck(
+      cards.map((card) => {
+        card.clicked = false;
+        return card;
+      })
+    );
     setScore(0);
   }
 
   return (
     <>
       <h1>The Many Faces of Ozzy</h1>
-      <h2>{score}</h2>
+      <div className="scores">
+        <h2>Score: {score} </h2>
+        <h2>Hi-Score: {hiScore}</h2>
+      </div>
       <div className="cards-container">
         {currentDeck.map((card) => (
           <div
