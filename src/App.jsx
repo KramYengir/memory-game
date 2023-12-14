@@ -4,6 +4,22 @@ import "./App.css";
 
 function App() {
   const [currentDeck, setCurrentDeck] = useState(cards);
+  const [score, setScore] = useState(0);
+  const [hiScore, setHiScore] = useState(0);
+
+  function manageClick(cardId) {
+    let clickedCard = currentDeck.filter((card) => card.id === cardId)[0];
+    if (clickedCard.clicked) {
+      alert("you die");
+      resetGame();
+    } else {
+      clickedCard.clicked = true;
+      shuffleCards();
+      setScore((oldScore) => {
+        return (oldScore += 1);
+      });
+    }
+  }
 
   function shuffleCards() {
     // Clone the array to avoid modifying the original
@@ -21,12 +37,24 @@ function App() {
     setCurrentDeck(shuffledArray);
   }
 
+  function resetGame() {
+    setCurrentDeck(cards);
+    setScore(0);
+  }
+
   return (
     <>
       <h1>The Many Faces of Ozzy</h1>
+      <h2>{score}</h2>
       <div className="cards-container">
         {currentDeck.map((card) => (
-          <div className="card-container" key={card.id} onClick={shuffleCards}>
+          <div
+            className="card-container"
+            key={card.id}
+            onClick={() => {
+              manageClick(card.id);
+            }}
+          >
             <img src={card.src} alt="" />
           </div>
         ))}
