@@ -18,6 +18,10 @@ function App() {
 
     if (clickedCard.clicked) {
       setIsGameOver(true);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth", // Optional: Adds smooth scrolling behavior
+      });
     } else {
       setAreRotated(true);
       setTimeout(() => {
