@@ -1,36 +1,46 @@
 import { useState } from "react";
 import cards from "./components/cardInfo";
 import "./App.css";
+import Card from "./components/Card";
+import GameOver from "./components/GameOver";
+
+// ... (other imports)
 
 function App() {
   const [currentDeck, setCurrentDeck] = useState(cards);
   const [score, setScore] = useState(0);
   const [hiScore, setHiScore] = useState(0);
+  const [areRotated, setAreRotated] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   function manageClick(cardId) {
-    console.table(cards);
-    let clickedCard = currentDeck.filter((card) => card.id === cardId)[0];
-    if (clickedCard.clicked) {
-      alert("you die");
-      resetGame();
-    } else {
-      clickedCard.clicked = true;
-      shuffleCards();
-      setScore((oldScore) => {
-        return (oldScore += 1);
-      });
+    let clickedCard = currentDeck.find((card) => card.id === cardId);
 
-      if (score + 1 >= hiScore) setHiScore(score + 1);
+    if (clickedCard.clicked) {
+      setIsGameOver(true);
+    } else {
+      setAreRotated(true);
+      setTimeout(() => {
+        setAreRotated(false);
+        handleCardClick(clickedCard);
+      }, 200);
     }
   }
 
+  function handleCardClick(clickedCard) {
+    clickedCard.clicked = true;
+    setScore((oldScore) => oldScore + 1);
+
+    if (score + 1 >= hiScore) setHiScore(score + 1);
+
+    shuffleCards();
+  }
+
   function shuffleCards() {
-    // Clone the array to avoid modifying the original
-    const shuffledArray = [...cards];
+    const shuffledArray = [...currentDeck];
 
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      // Swap elements at i and j
       [shuffledArray[i], shuffledArray[j]] = [
         shuffledArray[j],
         shuffledArray[i],
@@ -41,6 +51,7 @@ function App() {
   }
 
   function resetGame() {
+    setIsGameOver(false);
     setCurrentDeck(
       cards.map((card) => {
         card.clicked = false;
@@ -52,6 +63,13 @@ function App() {
 
   return (
     <>
+      {isGameOver && (
+        <GameOver
+          message={score == 12 ? "Well Done!" : "Game Over!"}
+          score={score}
+          onclick={resetGame}
+        />
+      )}
       <h1>The Many Faces of Ozzy</h1>
       <div className="scores">
         <h2>Score: {score} </h2>
@@ -59,15 +77,12 @@ function App() {
       </div>
       <div className="cards-container">
         {currentDeck.map((card) => (
-          <div
-            className="card-container"
+          <Card
             key={card.id}
-            onClick={() => {
-              manageClick(card.id);
-            }}
-          >
-            <img src={card.src} alt="" />
-          </div>
+            card={card}
+            areRotated={areRotated}
+            manageClick={manageClick}
+          />
         ))}
       </div>
     </>
