@@ -1,16 +1,13 @@
-const Card = ({ card, areRotated, manageClick }) => {
+const Card = ({ card, manageClick }) => {
   return (
     <div
-      className={`card-container ${areRotated ? "flip" : ""}`}
+      className="card-container"
       onClick={() => {
         manageClick(card.id);
       }}
     >
-      <div className="card flipper">
-        <div className="card front">
-          <img src={card.src} alt="" />
-        </div>
-        <div className="card back"></div>
+      <div className="card">
+        <img src={card.src} alt="" />
       </div>
     </div>
   );

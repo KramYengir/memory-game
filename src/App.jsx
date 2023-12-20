@@ -10,7 +10,6 @@ function App() {
   const [currentDeck, setCurrentDeck] = useState(cards);
   const [score, setScore] = useState(0);
   const [hiScore, setHiScore] = useState(0);
-  const [areRotated, setAreRotated] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
 
   function manageClick(cardId) {
@@ -23,9 +22,7 @@ function App() {
         behavior: "smooth", // Optional: Adds smooth scrolling behavior
       });
     } else {
-      setAreRotated(true);
       setTimeout(() => {
-        setAreRotated(false);
         handleCardClick(clickedCard);
       }, 200);
     }
@@ -36,6 +33,8 @@ function App() {
     setScore((oldScore) => oldScore + 1);
 
     if (score + 1 >= hiScore) setHiScore(score + 1);
+
+    score + 1 == 12 && setIsGameOver(true);
 
     shuffleCards();
   }
@@ -81,12 +80,7 @@ function App() {
       </div>
       <div className="cards-container">
         {currentDeck.map((card) => (
-          <Card
-            key={card.id}
-            card={card}
-            areRotated={areRotated}
-            manageClick={manageClick}
-          />
+          <Card key={card.id} card={card} manageClick={manageClick} />
         ))}
       </div>
     </>

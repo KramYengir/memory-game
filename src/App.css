@@ -1,9 +1,9 @@
 #root {
-  position: relative;
-  max-width: 1280px;
-  min-height: 100%;
-  margin: 0 auto;
+  height: 100%;
   text-align: center;
+
+  display: grid;
+  place-content: center;
 }
 
 .scores {
@@ -14,15 +14,14 @@
 .cards-container {
   display: flex;
   flex-wrap: wrap;
+  max-width: min(95vw, 1400px);
   padding: 2em;
   justify-content: center;
   gap: 1.5rem;
 }
 
 .card-container {
-  position: relative;
-  max-width: 200px;
-  perspective: 1000px;
+  width: clamp(90px, 20vw, 200px);
 
   border-radius: 10px;
 
@@ -53,7 +52,7 @@
   padding-top: 10vh;
   background-color: rgba(0, 0, 0, 0.911);
 
-  && .modal {
+  .modal {
     padding: 20px 50px;
     max-height: 200px;
     background-color: rgb(34, 36, 36);
@@ -61,11 +60,11 @@
     border-radius: 20px;
   }
 
-  && p {
+  p {
     text-transform: uppercase;
   }
 
-  && button {
+  button {
     padding: 10px 30px;
     border-radius: 10px;
     text-transform: uppercase;
@@ -73,16 +72,17 @@
     cursor: pointer;
   }
 
-  && button:hover,
-  && button:focus {
+  button:hover,
+  button:focus {
     color: whitesmoke;
     background-color: transparent;
     outline: 1px solid white;
   }
 }
 
-@media screen and (max-width: 400px) {
+/* @media screen and (max-width: 400px) {
   .card-container {
     max-width: 100px;
   }
 }
+ */
