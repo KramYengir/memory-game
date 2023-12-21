@@ -7,7 +7,7 @@ const Card = ({ card, manageClick }) => {
       }}
     >
       <div className="card">
-        <img src={card.src} alt="" />
+        <img src={card.src} alt="image of weinmaraner dog" />
       </div>
     </div>
   );
